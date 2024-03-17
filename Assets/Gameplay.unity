@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.08866245, g: 0.11984362, b: 0.30843452, a: 1}
+  m_IndirectSpecularColor: {r: 0.08866245, g: 0.11984362, b: 0.30843642, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -6303,25 +6303,29 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isAlive: 1
   movementSpeed: 3
+  currentHealth: 0
+  attackRange: 2
+  attackAngleThresold: 0.33
+  anim: {fileID: 0}
   mod_health:
     statValue: 100
-    statRange: {x: -75, y: 400}
+    statRange: {x: 30, y: 400}
     gainRate: 5
   mod_speed:
     statValue: 3
     statRange: {x: 0.5, y: 15}
     gainRate: 0.1
   mod_strenght:
-    statValue: 0
-    statRange: {x: -2.2, y: 15}
+    statValue: 3
+    statRange: {x: 1, y: 20}
     gainRate: 0.1
   mod_atkSpd:
-    statValue: 1
+    statValue: 2
     statRange: {x: 1, y: 6}
-    gainRate: 0.1
+    gainRate: 0.2
   mod_dodge:
     statValue: 20
-    statRange: {x: 0, y: 100}
+    statRange: {x: 1, y: 100}
     gainRate: 1
   statsRenderer: {fileID: 1265795761}
   finalMoveDir: {x: 0, y: 0, z: 0}
@@ -10326,9 +10330,9 @@ MonoBehaviour:
   tex: {fileID: 2800000, guid: f5e4010664f13004183e44914849fb72, type: 3}
   radarColorGradient:
     serializedVersion: 2
-    key0: {r: 0.62352943, g: 0, b: 0.07058824, a: 1}
-    key1: {r: 1, g: 0, b: 0.11320734, a: 1}
-    key2: {r: 0.62352943, g: 0, b: 0.07058824, a: 0}
+    key0: {r: 0.62352943, g: 0, b: 0.28038296, a: 1}
+    key1: {r: 1, g: 0, b: 0.3298025, a: 1}
+    key2: {r: 0.62352943, g: 0, b: 0.28235295, a: 0}
     key3: {r: 0, g: 0, b: 0, a: 0}
     key4: {r: 0, g: 0, b: 0, a: 0}
     key5: {r: 0, g: 0, b: 0, a: 0}
@@ -10519,7 +10523,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.8117647, g: 0, b: 0.27450982, a: 0.23529412}
+  m_Color: {r: 0.3611137, g: 0.20870599, b: 0.433, a: 0.72156864}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -13152,7 +13156,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.4528302, g: 0, b: 0, a: 1}
+  m_Color: {r: 0.305, g: 0.1342, b: 0.17982921, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -13439,7 +13443,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.4245283, g: 0.09011215, b: 0.09011215, a: 1}
+  m_Color: {r: 0.2682939, g: 0.151088, b: 0.284, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -13620,7 +13624,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.8117647, g: 0, b: 0.27450982, a: 1}
+  m_Color: {r: 0.8117647, g: 0, b: 0.27450982, a: 0.46666667}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1

@@ -13,14 +13,19 @@ public class PlayerController : MonoBehaviour {
     public static PlayerController instance;
     public bool isAlive = true;
     public float movementSpeed;
+    public float currentHealth;
+    public float attackRange = 2f;
+    public float attackAngleThresold = 0.33f;
+    public Animator anim;
     Transform t, cam;
-    bool isMoving, wasDamaged, atk_melee;
+    bool isMoving, wasDamaged, atk_melee, atk_Click, incomingAttackMissed, attackTrigger;
     [Space()]
     public StatInfo mod_health;
     public StatInfo mod_speed, mod_strenght, mod_atkSpd, mod_dodge;
     public RadarChartRenderer statsRenderer;
     Rigidbody rb;
     public Vector3 finalMoveDir;
+    float NextAttackHardCooldown;
 
     private void Awake() {
         instance = this;
@@ -42,6 +47,7 @@ public class PlayerController : MonoBehaviour {
         GameManager.OnTick_10 += TickHandler_10;
         GameManager.OnTick_20 += TickHandler_20;
         statsRenderer.GenerateMesh(GetStats());
+        currentHealth = mod_health.statValue;
     }
 
     private void OnDestroy() {
@@ -80,14 +86,51 @@ public class PlayerController : MonoBehaviour {
     }
     private void AttackHandler() {
         if (!isAlive) return;
+        if(Time.time > NextAttackHardCooldown) {
+            attackTrigger = false;
+        }
         if (Input.GetMouseButtonDown(0)) {
             //ataca melee
+            if (!attackTrigger) {
+                attackTrigger = true;
+                atk_Click = true;
+                if (anim)anim.SetTrigger("Attack");
+
+                NextAttackHardCooldown = Time.time + 1f;
+                EnemyController[] enemies = FindObjectsOfType<EnemyController>();
+                if (enemies != null) {
+                    for (int i = 0; i < enemies.Length; i++) {
+                        float dot = Vector3.Dot(t.forward, (enemies[i].transform.position - t.position));
+                        if (dot > attackAngleThresold) {
+                            if (Vector3.Distance(enemies[i].transform.position, t.position) <= attackRange) {
+                                //atacar
+                                enemies[i].GetDamage(GetModAttack());
+                                atk_melee = true;
+                            }
+                        }
+                    }
+                }
+            }
         }
-        /*
-        else if (Input.GetMouseButtonDown(1)) {
-            //ataca magico
+    }
+    private float GetModAttack() {
+        return 10f + mod_strenght.statValue;
+    }
+    public void GetDamage(float dmgPoints) {
+        float randAtkChance = UnityEngine.Random.value;
+        if (randAtkChance > mod_dodge.statValue / 100f) {
+            currentHealth -= UnityEngine.Random.Range(dmgPoints * 0.8f, dmgPoints * 1.2f);
+            if (currentHealth <= 0) {
+                Death();
+            }
         }
-        */
+        else {
+            incomingAttackMissed = true;
+        }
+    }
+    public void Death() {
+        //player dies
+        currentHealth = 0;
     }
     private void TickHandler_2(int curTicks) {
         if (isMoving) {
@@ -103,8 +146,21 @@ public class PlayerController : MonoBehaviour {
         statsRenderer.GenerateMesh(GetStats());
     }
     private void TickHandler_10(int curTicks) {
-        //atack melee
+        //atack click
+        if (atk_Click) {
+            atk_Click = false;
+            mod_atkSpd.statValue += mod_atkSpd.gainRate;
+            UI_Manager.instance.ShowPlayerText("<size=130%>++<size=100%>" + " Attack Speed", Color.green);
+        }
+        else {
+            mod_atkSpd.statValue -= mod_atkSpd.gainRate;
+            UI_Manager.instance.ShowPlayerText("<size=130%>--<size=100%>" + " Attack Speed", Color.red);
+        }
+        mod_atkSpd.statValue = Mathf.Clamp(mod_atkSpd.statValue, mod_atkSpd.statRange.x, mod_atkSpd.statRange.y);
+
+        //atack STRENGHT
         if (atk_melee) {
+            atk_melee = false;
             mod_strenght.statValue += mod_strenght.gainRate;
             UI_Manager.instance.ShowPlayerText("<size=130%>++<size=100%>" + " Strenght", Color.green);
         }
@@ -117,15 +173,30 @@ public class PlayerController : MonoBehaviour {
     }
     private void TickHandler_20(int curTicks) {
         //health
+        if (incomingAttackMissed) {
+            incomingAttackMissed = false;
+            mod_dodge.statValue += mod_dodge.gainRate;
+            UI_Manager.instance.ShowPlayerText("<size=130%>++<size=100%>" + " Dodge", Color.green);
+        }
+        else {
+            mod_dodge.statValue -= mod_dodge.gainRate;
+            UI_Manager.instance.ShowPlayerText("<size=130%>--<size=100%>" + " Dodge", Color.red);
+        }
+        mod_dodge.statValue = Mathf.Clamp(mod_dodge.statValue, mod_dodge.statRange.x, mod_dodge.statRange.y);
+
+        //health stuff
         if (wasDamaged) {
+            wasDamaged = false;
             mod_health.statValue += mod_health.gainRate;
             UI_Manager.instance.ShowPlayerText("<size=130%>++<size=100%>" + " Health", Color.green);
         }
         else {
             mod_health.statValue -= mod_health.gainRate;
+            if(currentHealth > mod_health.statValue) {
+                currentHealth = mod_health.statValue;
+            }
             UI_Manager.instance.ShowPlayerText("<size=130%>--<size=100%>" + " Health", Color.red);
         }
         mod_health.statValue = Mathf.Clamp(mod_health.statValue, mod_health.statRange.x, mod_health.statRange.y);
-
     }
 }
