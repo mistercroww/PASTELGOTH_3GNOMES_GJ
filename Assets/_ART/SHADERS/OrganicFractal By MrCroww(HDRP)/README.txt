@@ -1,0 +1,5 @@
+Hey!
+This is a totally free adaptation of the "Organic Fractal" GLSL shader to shader graph made by Mr. Croww (aka. @MisterCroww).
+The implementation its based on the code provided by Mirza Beig (aka. @TheMirzaBeig) which at the same time is based on the shader by Yonatan (aka. @zozuar) that was circulating around twitter.
+Feel free to use this as you see fit. Originally i did it in HDRP, but i believe it can work in any render pipeline you choose. Just make sure the references and the subgraph are set correctly.
+Inside the example shader graph that i included, i just sampled the "normalized" output of the original function to a gradient inside the shader itself just to try mimic the look of the original shader posted by Yonatan on twigl (HERE: https://twigl.app/?ol=true&ss=-NNIajM4aEzy75lqtAUd)
