@@ -9,16 +9,15 @@ public struct StatInfo {
     public Vector2 statRange;
     public float gainRate;
 }
-public class PlayerController : MonoBehaviour
-{
+public class PlayerController : MonoBehaviour {
     public static PlayerController instance;
     public bool isAlive = true;
     public float movementSpeed;
     Transform t, cam;
-    bool isMoving, wasDamaged, atk_melee, atk_magic;
+    bool isMoving, wasDamaged, atk_melee;
     [Space()]
     public StatInfo mod_health;
-    public StatInfo mod_speed, mod_strenght, mod_magic;
+    public StatInfo mod_speed, mod_strenght, mod_atkSpd, mod_curse;
     public RadarChartRenderer statsRenderer;
     Rigidbody rb;
     public Vector3 finalMoveDir;
@@ -30,13 +29,12 @@ public class PlayerController : MonoBehaviour
         rb = GetComponent<Rigidbody>();
     }
     public StatInfo[] GetStats() {
-        var tStats = new StatInfo[6];
+        var tStats = new StatInfo[5];
         tStats[0] = mod_health;
         tStats[1] = mod_speed;
         tStats[2] = mod_strenght;
-        tStats[3]= mod_magic;
-        tStats[4]= mod_strenght;
-        tStats[5]= mod_magic;
+        tStats[3] = mod_atkSpd;
+        tStats[4] = mod_curse;
         return tStats;
     }
     private void Start() {
@@ -84,9 +82,11 @@ public class PlayerController : MonoBehaviour
         if (Input.GetMouseButtonDown(0)) {
             //ataca melee
         }
+        /*
         else if (Input.GetMouseButtonDown(1)) {
             //ataca magico
         }
+        */
     }
     private void TickHandler_2(int curTicks) {
         if (isMoving) {
@@ -102,7 +102,7 @@ public class PlayerController : MonoBehaviour
         statsRenderer.GenerateMesh(GetStats());
     }
     private void TickHandler_10(int curTicks) {
-       //atack melee
+        //atack melee
         if (atk_melee) {
             mod_strenght.statValue += mod_strenght.gainRate;
             UI_Manager.instance.ShowPlayerText("<size=130%>++<size=100%>" + " Strenght", Color.green);
@@ -112,16 +112,6 @@ public class PlayerController : MonoBehaviour
             UI_Manager.instance.ShowPlayerText("<size=130%>--<size=100%>" + " Strenght", Color.red);
         }
         mod_strenght.statValue = Mathf.Clamp(mod_strenght.statValue, mod_strenght.statRange.x, mod_strenght.statRange.y);
-        //atack magic
-        if (atk_magic) {
-            mod_magic.statValue += mod_magic.gainRate;
-            UI_Manager.instance.ShowPlayerText("<size=130%>++<size=100%>" + " Magic", Color.green);
-        }
-        else {
-            mod_magic.statValue -= mod_magic.gainRate;
-            UI_Manager.instance.ShowPlayerText("<size=130%>--<size=100%>" + " Magic", Color.red);
-        }
-        mod_magic.statValue = Mathf.Clamp(mod_magic.statValue, mod_magic.statRange.x, mod_magic.statRange.y);
 
     }
     private void TickHandler_20(int curTicks) {
