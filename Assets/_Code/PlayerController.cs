@@ -15,7 +15,7 @@ public class PlayerController : MonoBehaviour {
     public float movementSpeed;
     public float currentHealth;
     public float attackRange = 2f;
-    public float attackAngleThresold = 0.33f;
+    public float attackAngleThresold = 45f;
     public Animator anim;
     Transform t, cam;
     bool isMoving, wasDamaged, atk_melee, atk_Click, incomingAttackMissed, attackTrigger;
@@ -101,6 +101,7 @@ public class PlayerController : MonoBehaviour {
                 if (enemies != null) {
                     for (int i = 0; i < enemies.Length; i++) {
                         float dot = Vector3.Dot(t.forward, (enemies[i].transform.position - t.position));
+                        //print(dot);
                         if (dot > attackAngleThresold) {
                             if (Vector3.Distance(enemies[i].transform.position, t.position) <= attackRange) {
                                 //atacar

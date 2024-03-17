@@ -219,6 +219,7 @@ Shader "Hidden/Amazing Assets/Curved World/TerrainLit/Little Planet (Y) ID 1/Bas
             #pragma multi_compile_fragment SHADOW_LOW SHADOW_MEDIUM SHADOW_HIGH SHADOW_VERY_HIGH
 
             #pragma multi_compile USE_FPTL_LIGHTLIST USE_CLUSTERED_LIGHTLIST
+            #pragma multi_compile_fragment AREA_SHADOW_MEDIUM AREA_SHADOW_HIGH
 
             #define SHADERPASS SHADERPASS_FORWARD
             #include "../TerrainLitTemplate.hlsl"
