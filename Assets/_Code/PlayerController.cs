@@ -17,7 +17,7 @@ public class PlayerController : MonoBehaviour {
     bool isMoving, wasDamaged, atk_melee;
     [Space()]
     public StatInfo mod_health;
-    public StatInfo mod_speed, mod_strenght, mod_atkSpd, mod_curse;
+    public StatInfo mod_speed, mod_strenght, mod_atkSpd, mod_dodge;
     public RadarChartRenderer statsRenderer;
     Rigidbody rb;
     public Vector3 finalMoveDir;
@@ -34,7 +34,7 @@ public class PlayerController : MonoBehaviour {
         tStats[1] = mod_speed;
         tStats[2] = mod_strenght;
         tStats[3] = mod_atkSpd;
-        tStats[4] = mod_curse;
+        tStats[4] = mod_dodge;
         return tStats;
     }
     private void Start() {
@@ -73,7 +73,8 @@ public class PlayerController : MonoBehaviour {
     private void MovementHandler() {
         if (!isAlive) return;
         //t.position += (movementSpeed + mod_speed.statValue) * Time.deltaTime * camRelativeDir.normalized;
-        Vector3 tVel = (movementSpeed + mod_speed.statValue) * Time.fixedDeltaTime * 50f * finalMoveDir.normalized;
+        movementSpeed = mod_speed.statValue;
+        Vector3 tVel = mod_speed.statValue * Time.fixedDeltaTime * 50f * finalMoveDir.normalized;
         tVel.y = rb.velocity.y;
         rb.velocity = tVel;
     }

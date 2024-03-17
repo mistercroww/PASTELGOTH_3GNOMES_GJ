@@ -26,9 +26,8 @@ public class RadarChartRenderer : MonoBehaviour
         Vector2[] uv = new Vector2[6];
         int[] tris = new int[15];
 
-        float baseOffset = 5f;
         for (int i = 0; i < newStats.Length; i++) {
-            vertices[i+1] = VertexPosition(i, newStats[i].statValue+ baseOffset, newStats.Length, newStats[i].statRange);
+            vertices[i+1] = VertexPosition(i, newStats[i].statValue, newStats.Length, newStats[i].statRange);
             uv[i + 1] = Vector2.one;
         }
         int currentIndex = 2;
